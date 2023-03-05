@@ -1,3 +1,4 @@
+$fn=1000;
 
 have_origins = true;
 module origin(thickness) {
@@ -35,7 +36,7 @@ evolution(3) {
   translate([400,0,0]) cube([50,y,1000]);
 }
 
-================================================
+//  ================================================
 
 module arm(height, gap) {
   y = 500;
@@ -49,4 +50,26 @@ evolution(4) {
   translate([smaller_arm_gap / 2, 0,arm_height]) rotate([-90,0,0]) arm(arm_height, 200);
 }
 
-================================================
+// ================================================
+module arm(height, gap) {
+  y = 500;
+  cube([50,y,height]);
+  translate([gap,0,0]) cube([50,y,height]);
+}
+
+module lower_arm(arm_height) {
+  difference() {
+    arm(arm_height, 400);
+    translate([- 10, 250, arm_height - 200]) rotate([0, 90, 0]) cylinder(r = 100, h = 800);
+  }
+}
+module upper_arm(arm_height) {
+  smaller_arm_gap = 200;
+  translate([smaller_arm_gap / 2, 0, arm_height]) rotate([- 90, 0, 0]) arm(arm_height, 200);
+}
+
+evolution(5) {
+  arm_height = 1000;
+  upper_arm(arm_height);
+  lower_arm(arm_height);
+}
